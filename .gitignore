@@ -1,0 +1,27 @@
+#python virtual enviroment
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# xschem and ngspice trash
+**/*.sch~
+**/*.sym~
+**/*.spice
+**/*.spc
+**/*.raw
+b3v32check.log
+
+# lvs, drc, pex reports
+**/*.ext
+**/*.log
+**/*.out
+**/*.report
+**/*.drc
+**/*.marker
+sky130_drc.txt
+
+# os temporal
+.DS_Store
+*~

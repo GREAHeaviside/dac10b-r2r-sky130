@@ -1,0 +1,16 @@
+# Entornos Virtuales
+venv/
+env/
+.venv/
+
+# Caché compilada de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Configuración local de VSCode (para que no suba tus ajustes de colores o pestañas)
+.vscode/
+
+# Archivos de SO
+.DS_Store
+Thumbs.db
