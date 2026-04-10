@@ -25,14 +25,14 @@ N 110 -120 160 -120 {lab=vdd}
 N 160 -120 160 -70 {lab=vdd}
 C {sky130_fd_pr/nfet_01v8.sym} 90 20 0 0 {name=M2
 W=1
-L=0.15
-nf=1 
+L=0.17
+nf=1
 mult=1
-ad="expr('int((@nf + 1)/2) * @W / @nf * 0.29')"
-pd="expr('2*int((@nf + 1)/2) * (@W / @nf + 0.29)')"
-as="expr('int((@nf + 2)/2) * @W / @nf * 0.29')"
-ps="expr('2*int((@nf + 2)/2) * (@W / @nf + 0.29)')"
-nrd="expr('0.29 / @W ')" nrs="expr('0.29 / @W ')"
+ad="\{int((nf+1)/2) * W/nf * 0.29\}"
+pd="\{2*int((nf+1)/2) * (W/nf + 0.29)\}"
+as="\{int((nf+2)/2) * W/nf * 0.29\}"
+ps="\{2*int((nf+2)/2) * (W/nf + 0.29)\}"
+nrd="\{0.29 / W\}" nrs="\{0.29 / W\}"
 sa=0 sb=0 sd=0
 model=nfet_01v8
 spiceprefix=X
@@ -43,15 +43,14 @@ C {opin.sym} 190 -30 0 0 {name=p3 lab=Y}
 C {ipin.sym} -80 -30 0 0 {name=p4 lab=A}
 C {sky130_fd_pr/pfet_01v8.sym} 90 -70 0 0 {name=M1
 W=1
-L=0.15
+L=0.17
 nf=1
 mult=1
-ad="expr('int((@nf + 1)/2) * @W / @nf * 0.29')"
-pd="expr('2*int((@nf + 1)/2) * (@W / @nf + 0.29)')"
-as="expr('int((@nf + 2)/2) * @W / @nf * 0.29')"
-ps="expr('2*int((@nf + 2)/2) * (@W / @nf + 0.29)')"
-nrd="expr('0.29 / @W ')" nrs="expr('0.29 / @W ')"
+ad="\{int((nf+1)/2) * W/nf * 0.29\}"
+pd="\{2*int((nf+1)/2) * (W/nf + 0.29)\}"
+as="\{int((nf+2)/2) * W/nf * 0.29\}"
+ps="\{2*int((nf+2)/2) * (W/nf + 0.29)\}"
+nrd="\{0.29 / W\}" nrs="\{0.29 / W\}"
 sa=0 sb=0 sd=0
 model=pfet_01v8
-spiceprefix=X
-}
+spiceprefix=X}
