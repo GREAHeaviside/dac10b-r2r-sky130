@@ -20,20 +20,13 @@ N 220 -80 220 0 {lab=vss}
 N 220 0 240 0 {lab=vss}
 N 220 -180 220 -100 {lab=vdd}
 N 220 -180 240 -180 {lab=vdd}
-N 100 40 100 60 {lab=A}
-N 100 -260 100 -220 {lab=#net1}
-N 70 -260 100 -260 {lab=#net1}
-N -40 -260 -20 -260 {lab=A}
-N 20 -220 20 -200 {lab=vss}
-N 20 -320 20 -300 {lab=vdd}
-N 20 -320 220 -320 {lab=vdd}
-N 220 -320 220 -180 {lab=vdd}
-N 20 -200 20 80 {lab=vss}
-N 20 80 220 80 {lab=vss}
-N 220 0 220 80 {lab=vss}
-N -20 60 100 60 {lab=A}
-N -30 60 -20 60 {lab=A}
-N -30 -260 -30 60 {lab=A}
+N 100 40 100 60 {lab=A_n}
+N 100 -260 100 -220 {lab=A_p}
+N 70 -260 100 -260 {lab=A_p}
+N -40 -260 -20 -260 {lab=A_p}
+N -20 60 100 60 {lab=A_n}
+N -30 60 -20 60 {lab=A_n}
+N -20 -260 70 -260 {lab=A_p}
 C {sky130_fd_pr/nfet_01v8.sym} 100 20 3 0 {name=M2
 W=1
 L=0.17
@@ -63,7 +56,7 @@ model=pfet_01v8
 spiceprefix=X}
 C {iopin.sym} -40 -90 2 0 {name=p1 lab=V1}
 C {iopin.sym} 240 -90 0 0 {name=p2 lab=V2}
-C {ipin.sym} -40 -260 0 0 {name=p3 lab=A}
+C {ipin.sym} -40 -260 0 0 {name=p3 lab=A_p}
 C {ipin.sym} 240 -180 2 0 {name=p5 lab=vdd}
 C {ipin.sym} 240 0 2 0 {name=p6 lab=vss}
-C {/foss/designs/dac10b-r2r-sky130/xschem/inv_x1/inv_x1.sym} 20 -260 0 0 {name=x1}
+C {ipin.sym} -30 60 0 0 {name=p4 lab=A_n}
