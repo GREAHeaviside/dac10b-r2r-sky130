@@ -19,6 +19,7 @@ N 110 -320 130 -320 {lab=vss}
 N 110 -290 130 -290 {lab=sel}
 N 110 -260 130 -260 {lab=lower_bit}
 N 110 -230 130 -230 {lab=upper_bit}
+N 270 -190 290 -190 {lab=vss}
 C {/foss/designs/dac10b-r2r-sky130/xschem/uc_res_x3/uc_res_x3.sym} 270 -90 0 0 {name=x1}
 C {/foss/designs/dac10b-r2r-sky130/xschem/inv_xN/inv_x64.sym} 320 -370 0 0 {name=x2[0:7]}
 C {/foss/designs/dac10b-r2r-sky130/xschem/decap/decap.sym} 520 -160 0 0 {name=x1[0:23]}
@@ -37,6 +38,7 @@ C {iopin.sym} 110 -260 2 0 {name=p12 lab=lower_bit}
 C {iopin.sym} 110 -230 2 0 {name=p13 lab=upper_bit}
 C {lab_wire.sym} 130 -260 2 0 {name=p14 sig_type=std_logic lab=lower_bit}
 C {lab_wire.sym} 130 -230 2 0 {name=p15 sig_type=std_logic lab=upper_bit}
-C {lab_wire.sym} 130 -320 2 0 {name=p16 sig_type=std_logic lab=vdd}
-C {lab_wire.sym} 130 -350 2 0 {name=p17 sig_type=std_logic lab=vss}
+C {lab_wire.sym} 130 -320 2 0 {name=p16 sig_type=std_logic lab=vss}
+C {lab_wire.sym} 130 -350 2 0 {name=p17 sig_type=std_logic lab=vdd}
 C {lab_wire.sym} 130 -290 2 0 {name=p18 sig_type=std_logic lab=sel}
+C {lab_wire.sym} 270 -190 0 0 {name=p19 sig_type=std_logic lab=vss}
