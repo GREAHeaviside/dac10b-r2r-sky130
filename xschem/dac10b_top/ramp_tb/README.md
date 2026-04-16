@@ -69,7 +69,7 @@ Each corresponds to a chunk of the sweep.
 * Results are appended progressively
 * Resume capability from last completed code
 
-Due to the heavy computation required by the Sky130 PDK models, each chunk of codes has a computing time of approximately 5-10 minutes, practically using full processor capability (tested on a 13th Gen i3). This script allows you to split up the simulation of the full DAC at your convenience without losing progress.
+Due to the heavy computation required by the Sky130 PDK models, each code has a computing time of approximately 5-10 minutes, practically using full processor capability (tested on a 13th Gen i3). This script allows you to split up the simulation of the full DAC at your convenience without losing progress.
 
 ---
 
