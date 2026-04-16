@@ -1,6 +1,5 @@
-#!/usr/bin/env python3
+#!/usr/bin/bash
 
-# -*- coding: utf-8 -*-
 # -----------------------------------------------------------------------------
 # Copyright (C) 2026 Juan Carlos Alvarez Herrera
 # Author: GREA Heaviside (@GREAHeaviside)
