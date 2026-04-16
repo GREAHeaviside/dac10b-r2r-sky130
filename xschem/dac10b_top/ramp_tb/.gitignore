@@ -1,0 +1,5 @@
+*.csv
+*.spice
+*.txt
+__pycache__/
+*.pyc
