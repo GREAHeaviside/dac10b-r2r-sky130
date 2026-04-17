@@ -19,36 +19,70 @@
 # -----------------------------------------------------------------------------
 
 
-# Search highest existing log number to avoid overwriting
-# If no logs exist, start at 1
+# Default iterations
+ITERS=10
 
-ITER=$(ls sim*_log.txt 2>/dev/null | grep -o '[0-9]\+' | sort -n | tail -1)
-if [ -z "$ITER" ]; then
-    ITER=1
-else
-    ITER=$((ITER + 1))
+while [[ "$#" -gt 0 ]]; do
+    case $1 in
+        --iters) 
+            ITERS="$2"
+            shift 2
+            ;;
+        *) 
+            echo "Usage: ./run_sweep.sh [--iters <number>]"
+            exit 1 
+            ;;
+    esac
+done
+
+# Create timing_profile.csv if it doesn't exist
+if [ ! -f timing_profile.csv ]; then
+    echo "Code,StartTime,EndTime,Duration(s)" > timing_profile.csv
 fi
 
-echo "Beginning DAC test sweep === LOG FILE: sim${ITER}_log.txt"
+SESSION_LOG="sim_session_$(date +%Y%m%d_%H%M%S).txt"
+echo "=== Running $ITERS iterations. Log: $SESSION_LOG ==="
 
-while true; do
-    echo "----------------------------------------"
-    echo "Iteration number $ITER..."
+for ((i=1; i<=ITERS; i++)); do
     
-    # Run the Python script to generate the stimulus file and check if we are done
+    # Run the Python script to get the next code to simulate
     PY_OUT=$(python3 generate_dc_sweep.py)
-    echo "$PY_OUT"
     
-    # If the Python script indicates we are done, break the loop
     if [[ "$PY_OUT" == *"DONE"* ]]; then
-        echo "Successfully completed all simulations. Exiting."
+        echo "¡All codes simulated (1024)! Exiting."
         break
     fi
     
-    # Run ngspice in batch mode
-    echo "Running ngspice..."
-    ngspice -b -o "sim${ITER}_log.txt" dac10b_top_tb_ramp.spice
+    # Get the current code from the Python output
+    CURRENT_CODE=$(echo "$PY_OUT" | grep "RUNNING_CODE" | cut -d':' -f2)
     
-    # Increment the counter for the next log
-    ITER=$((ITER + 1))
+    # Begin timing
+    START_DATE=$(date +"%Y-%m-%d %H:%M:%S")
+    START_SECONDS=$(date +%s)
+    
+    echo "[$i/$ITERS] Simulating Code $CURRENT_CODE... (Started: $START_DATE)"
+    
+    # Run Ngspice and save its output to a temporary file
+    ngspice -b -o temp_ngspice.log dac10b_top_tb_ramp.spice
+    
+    # Add the temporary log to the session log
+    cat temp_ngspice.log >> "$SESSION_LOG"
+    
+    # End timing
+    END_DATE=$(date +"%Y-%m-%d %H:%M:%S")
+    END_SECONDS=$(date +%s)
+    
+    # calculate duration
+    DURATION=$((END_SECONDS - START_SECONDS))
+    
+    echo "Completed in ${DURATION} seconds."
+    echo "----------------------------------------"
+    
+    # Save timing info to CSV
+    echo "$CURRENT_CODE,$START_DATE,$END_DATE,$DURATION" >> timing_profile.csv
+
 done
+
+# Limpiamos el archivo temporal
+rm -f temp_ngspice.log
+echo "Session completed."

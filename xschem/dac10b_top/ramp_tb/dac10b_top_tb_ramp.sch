@@ -17,7 +17,7 @@ N 805 -155 805 -140 {lab=GND}
 N 250 -240 280 -240 {lab=clk}
 N 250 -200 280 -200 {lab=D[0:9]}
 N 250 -260 280 -260 {lab=vdd}
-C {dac10b_top.sym} 260 -60 0 0 {name=x1}
+C {/foss/designs/dac10b-r2r-sky130/xschem/dac10b_top/dac10b_top.sym} 260 -60 0 0 {name=x1}
 C {lab_wire.sym} 360 -340 0 0 {name=p1 sig_type=std_logic lab=vdd}
 C {capa.sym} 600 -170 0 0 {name=C1
 m=1
@@ -37,6 +37,10 @@ C {lab_wire.sym} 250 -240 0 0 {name=p5 sig_type=std_logic lab=clk}
 C {sky130_fd_pr/corner.sym} 530 -430 0 0 {name=CORNER only_toplevel=false corner=tt}
 C {code_shown.sym} 730 -450 0 0 {name=NGSPICE only_toplevel=false value="
 .include stimulus_dc.spice
+.options reltol=1e-6 vntol=1u abstol=1p
+.options itl1=500 itl2=200
+.options cshunt=1f
+-options acct
 "}
 C {lab_wire.sym} 250 -200 0 0 {name=p7 sig_type=std_logic lab=D[0:9]}
 C {lab_wire.sym} 250 -260 0 0 {name=p4 sig_type=std_logic lab=vdd}
