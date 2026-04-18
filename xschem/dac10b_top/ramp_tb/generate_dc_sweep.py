@@ -16,6 +16,9 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 # -----------------------------------------------------------------------------
 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import os
 
 v_high = 1.8
@@ -26,7 +29,6 @@ start_code = 0
 append_mode = True
 last_vout = 0.0
 
-# Read the last code and Vout from the CSV if it exists
 if os.path.exists('dac_transfer.csv'):
     with open('dac_transfer.csv', 'r') as f:
         lines = f.readlines()
@@ -47,10 +49,12 @@ if start_code > MAX_CODE:
 
 print(f"RUNNING_CODE:{start_code}")
 
-# Write the SPICE file for the current code
 with open('stimulus_dc.spice', 'w') as f:
     for i in range(10):
         f.write(f"V_D{i} D[{i}] 0 DC 0\n")
+
+    if start_code > 0:
+        f.write(f".nodeset V(vout)={last_vout}\n")
 
     f.write("\n.control\n")
     
@@ -65,12 +69,11 @@ with open('stimulus_dc.spice', 'w') as f:
         v_val = v_high if bits[bit_index] == '1' else v_low
         f.write(f"alter V_D{i} {v_val}\n")
     
-    # If it's not the first run, set the nodeset to the last Vout to help convergence
-    if start_code > 0:
-        f.write(f"nodeset V(vout)={last_vout}\n")
-    
     f.write("op\n")
     f.write(f"echo \"{start_code},$&V(vout)\" >> dac_transfer.csv\n")
+    
+    f.write("rusage all\n")
+    
     f.write("destroy all\n")
     f.write("quit\n")
     f.write(".endc\n")

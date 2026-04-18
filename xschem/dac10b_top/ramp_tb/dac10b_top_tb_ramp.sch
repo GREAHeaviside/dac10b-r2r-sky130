@@ -40,7 +40,7 @@ C {code_shown.sym} 730 -450 0 0 {name=NGSPICE only_toplevel=false value="
 .options reltol=1e-6 vntol=1u abstol=1p
 .options itl1=500 itl2=200
 .options cshunt=1f
--options acct
+.options acct
 "}
 C {lab_wire.sym} 250 -200 0 0 {name=p7 sig_type=std_logic lab=D[0:9]}
 C {lab_wire.sym} 250 -260 0 0 {name=p4 sig_type=std_logic lab=vdd}
