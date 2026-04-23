@@ -1,6 +1,23 @@
+# -----------------------------------------------------------------------------
+# Copyright (C) 2026 Juan Carlos Alvarez Herrera
+# Author: GREA Heaviside (@GREAHeaviside)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+# -----------------------------------------------------------------------------
+
 import numpy as np
 
-# --- (Aquí van tus funciones generar_resistores_ladder y construir_matriz_Y) ---
 def generar_resistores_ladder(n=10, R_nom=10000, A_R=0.002, W=1.0, L=25.0):
     sigma_R_rel = A_R / np.sqrt(W * L)
     sigma_2R_rel = sigma_R_rel / np.sqrt(2)
@@ -33,44 +50,40 @@ def construir_matriz_Y(n, R_g, R_h, R_v):
                 Y[i, k] = 0.0
     return Y
 
-def barrer_codigos_dac(n, R_nom, seed, V_ref=3.3):
+def barrer_codigos_dac(n, R_nom, seed, V_ref=3.3, A_R=0.002, W=1.0, L=25.0):
     """
-    Genera el ladder con mismatch y calcula V_out para todos los códigos posibles.
-    
-    Devuelve:
-    - codigos: Array con los valores enteros (0 a 2^n - 1)
-    - v_out_real: Array con las tensiones de salida calculadas
+    Generates the real output voltages of an R-2R ladder DAC for all possible digital codes, given a set of parameters and a random seed for reproducibility.
+    Parameters:
+    - n: Number of bits (resolution) of the DAC.
+    - R_nom: Nominal resistance value for the resistors in the ladder.
+    - seed: Random seed for reproducibility of the resistor variations.
+    - V_ref: Reference voltage for the DAC.
+    - A_R: Process variation parameter for the resistors.
+    - W: Width of the resistors (for variation calculation).
+    - L: Length of the resistors (for variation calculation).
+    Returns:
+    - codigos: Array of digital codes (from 0 to 2^n - 1).
+    - v_out_real: Array of real output voltages corresponding to each digital code
     """
-    # 1. Fijar semilla para reproducibilidad
     np.random.seed(seed)
     
-    # 2. Generar el circuito físico (Esto se hace UNA sola vez)
-    R_g, R_h, R_v = generar_resistores_ladder(n=n, R_nom=R_nom)
+    R_g, R_h, R_v = generar_resistores_ladder(n=n, R_nom=R_nom, A_R=A_R, W=W, L=L)
     Y = construir_matriz_Y(n, R_g, R_h, R_v)
-    
-    # Invertimos la matriz Y para obtener la matriz de impedancias Z
-    # V = Z * I
+
     Z = np.linalg.inv(Y)
     
-    # 3. Preparar los arrays de salida
     num_codigos = 2**n
     codigos = np.arange(num_codigos)
     v_out_real = np.zeros(num_codigos)
     
-    # 4. Barrido de todos los códigos
     for code in range(num_codigos):
-        # Convertir el entero a un array binario de longitud n.
-        # [::-1] invierte el string para que el índice 0 sea el LSB (b_0)
         b_str = format(code, f'0{n}b')[::-1]
         b = np.array([int(bit) for bit in b_str])
         
-        # Calcular el vector de corrientes inyectadas por los switches
         I_in = b * V_ref * (1 / R_v)
         
-        # Calcular todas las tensiones nodales multiplicando Z por I_in
         V_nodos = Z @ I_in
-        
-        # Guardar solo la tensión del último nodo (V_out)
+
         v_out_real[code] = V_nodos[-1]
         
     return codigos, v_out_real

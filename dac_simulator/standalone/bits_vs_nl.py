@@ -1,8 +1,25 @@
+# -----------------------------------------------------------------------------
+# Copyright (C) 2026 Juan Carlos Alvarez Herrera
+# Author: GREA Heaviside (@GREAHeaviside)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+# -----------------------------------------------------------------------------
+
 import numpy as np
 import matplotlib.pyplot as plt
 
-from mismatch_simulation import barrer_codigos_dac
-
+from ..mismatch_simulation import barrer_codigos_dac
 
 V_ref = 3.3
 R_nom = 10000.0
@@ -18,7 +35,7 @@ inl_worst_p95 = []
 
 
 for bits in bits_list:
-    print(f"Simulando {bits} bits...")
+    print(f"Simulating {bits} bits...")
 
     dnl_worst_mc = []
     inl_worst_mc = []
@@ -35,20 +52,16 @@ for bits in bits_list:
         V_LSB = V_ref / (2**bits)
         V_ideal = codigos * V_LSB
 
-        # --- DNL ---
         DNL = np.zeros(len(codigos))
         for k in range(1, len(codigos)):
             escalon_real = V_real[k] - V_real[k-1]
             DNL[k] = (escalon_real / V_LSB) - 1.0
 
-        # --- INL ---
         INL = (V_real - V_ideal) / V_LSB
 
-        # --- Métricas worst-case ---
         dnl_worst_mc.append(np.max(np.abs(DNL)))
         inl_worst_mc.append(np.max(np.abs(INL)))
 
-    # Estadísticas
     dnl_worst_mean.append(np.mean(dnl_worst_mc))
     inl_worst_mean.append(np.mean(inl_worst_mc))
 
@@ -64,12 +77,12 @@ plt.plot(bits_list, dnl_worst_p95, 's--', label='DNL worst (p95)')
 plt.plot(bits_list, inl_worst_mean, 'o-', label='INL worst (mean)')
 plt.plot(bits_list, inl_worst_p95, 's--', label='INL worst (p95)')
 
-plt.axhline(0.5, linestyle='--', label='Límite típico DNL')
-plt.axhline(1.0, linestyle=':', label='Límite típico INL')
+plt.axhline(0.5, linestyle='--', label='Typical DNL limit')
+plt.axhline(1.0, linestyle=':', label='Typical INL limit')
 
-plt.xlabel("Número de bits")
+plt.xlabel("Number of bits")
 plt.ylabel("Error [LSB]")
-plt.title("Worst-case DNL/INL vs Resolución (Monte Carlo)")
+plt.title("Worst-case DNL/INL vs Resolution (Monte Carlo)")
 plt.grid(True, linestyle='--', alpha=0.5)
 plt.legend()
 
